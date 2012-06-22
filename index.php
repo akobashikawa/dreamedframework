@@ -43,7 +43,9 @@ function process() {
 
     // register path
     $f = $module . '_path';
-    $paths[$module] = $f();
+    if (function_exists($f)) {
+      $paths[$module] = $f();
+    }
   }
 
   foreach ($paths as $path) {
