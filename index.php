@@ -1,4 +1,7 @@
 <?php
+/**
+ * To show preformated value of $x
+ */
 function pr($x) {
   echo '<pre>' . print_r($x, TRUE) . '</pre>';
 }
@@ -29,35 +32,40 @@ function get_modules_list($dir = 'modules') {
   return $dirs;
 }
 
-function process() {
-  $url = $_SERVER['REQUEST_URI'];
-  $modules = get_modules_list('modules');pr($modules);
-  $paths = array();
+/**
+ * Include module.php inside each module directory
+ */
+function include_modules() {
+  global $modules;
 
-  foreach ($modules as $module) {
+  foreach ($modules as $key => $module) {
     // include
-    $module_file = 'modules/' . $module . '/main.php';
+    // it is optional ;-)
+    $module_file = 'modules/' . $key . '/module.php';
     if ( file_exists($module_file) ) {
       include_once($module_file);
     }
-
-    // register path
-    $f = $module . '_path';
-    if (function_exists($f)) {
-      $paths[$module] = $f();
-    }
-  }
-
-  foreach ($paths as $path) {
-    //pr($path);
-    foreach ($path as $key => $value) {
-      //pr($key);
-      if ( preg_match($key, $url) == 1 ) {
-        $value['action']();
-      }
-    }
-  }
+  }// modules
 
 }
 
-process();
+/**
+ * Return base_path of url
+ */
+function base_path() {
+  return dirname($_SERVER['SCRIPT_NAME']);
+}
+
+/**
+ * Return base_path of file
+ */
+function base_dir() {
+  return dirname(__FILE__);
+}
+
+//////////
+// MAIN //
+//////////
+$modules = get_modules_list('modules');
+include_modules();
+root_main();
