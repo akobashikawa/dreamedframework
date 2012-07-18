@@ -62,6 +62,9 @@ function root_root() {
   $items['/^$/'] = array(
     'action' => 'root_default'
   );
+  $items['/^.*$/'] = array(
+    'action' => 'root_nobody'
+  );
   return $items;
 }
 
@@ -75,4 +78,18 @@ function root_default(&$data) {
   $data['qp']
     ->find(':root body')
     ->append('<h1>Dreamed Framework</h1>');
+}
+/**
+ * Callback
+ */
+function root_nobody(&$data) {
+  if ($data['res']==array('root'=>array())) {
+    $data['qp']
+      ->find(':root title')
+      ->html('Dreamed Framework');
+    $data['qp']
+      ->find(':root body')
+      ->append('<p>nobody implements action for this request:</p>')
+      ->append('<pre>' . print_r($data['req'], TRUE) . '</pre>');
+  }
 }
