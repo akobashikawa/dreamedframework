@@ -13,6 +13,7 @@ function root_main() {
   $data['qp'] = $qp;
 
   root_hook('root', $data);
+  root_nobody($data);
 
   $data['qp']->writeHTML();
 
@@ -62,9 +63,6 @@ function root_root() {
   $items['/^$/'] = array(
     'action' => 'root_default'
   );
-  $items['/^.*$/'] = array(
-    'action' => 'root_nobody'
-  );
   return $items;
 }
 
@@ -79,11 +77,21 @@ function root_default(&$data) {
     ->find(':root body')
     ->append('<h1>Dreamed Framework</h1>');
 }
-/**
- * Callback
- */
+
+function is_array_empty($a) {
+  if (is_array($a) && count($a)>0) {
+    foreach ($a as $item) {
+      if (!is_array_empty($item)) {
+        return false;
+      }
+    }
+    return true;
+  } else {
+    return empty($a);
+  }
+}
 function root_nobody(&$data) {
-  if ($data['res']==array('root'=>array())) {
+  if (is_array_empty($data['res'])) {
     $data['qp']
       ->find(':root title')
       ->html('Dreamed Framework');
