@@ -14,7 +14,7 @@ function hello_root() {
  * Callback
  */
 function hello_helloworld(&$data) {
-  $data['req']['hello'] = 'helloworld';
+  $data['req']['hello'] = 'hello';
   $data['res']['hello']['greeting'] = 'Hello';
   $data['res']['hello']['to'] = 'World';
   root_hook('hello', $data);

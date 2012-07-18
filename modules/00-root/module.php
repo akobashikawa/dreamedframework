@@ -59,7 +59,7 @@ function root_getqp($template) {
  */
 function root_root() {
   $items = array();
-  $items['/^.*$/'] = array(
+  $items['/^$/'] = array(
     'action' => 'root_default'
   );
   return $items;
@@ -71,7 +71,7 @@ function root_root() {
 function root_default(&$data) {
   $data['qp']
     ->find(':root title')
-    ->html('Hello World!');
+    ->html('Dreamed Framework');
   $data['qp']
     ->find(':root body')
     ->append('<h1>Dreamed Framework</h1>');

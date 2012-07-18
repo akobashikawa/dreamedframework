@@ -4,7 +4,7 @@
  */
 function hola_hello() {
   $items = array();
-  $items['/^helloworld$/'] = array(
+  $items['/^hello$/'] = array(
     'action' => 'hola_hola'
   );
   return $items;
@@ -14,6 +14,6 @@ function hola_hello() {
  * Callback
  */
 function hola_hola(&$data) {
-  $data['res']['hello']['greeting'] = 'Hola';
-  $data['res']['hello']['to'] = 'Mundo';
+  $data['res']['hello']['greeting'] .= ' (Hola)';
+  $data['res']['hello']['to'] .= ' (Mundo)';
 }
