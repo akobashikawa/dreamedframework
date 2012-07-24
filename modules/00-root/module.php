@@ -18,9 +18,6 @@ function root_main() {
   // someone?
   root_hook('root', $data);
 
-  // nobody?
-  root_nobody($data);
-
   // render
   $data['qp']->writeHTML();
 
@@ -95,17 +92,5 @@ function is_array_empty($a) {
     return true;
   } else {
     return empty($a);
-  }
-}
-
-function root_nobody(&$data) {
-  if (is_array_empty($data['res'])) {
-    $data['qp']
-      ->find(':root title')
-      ->html('Dreamed Framework');
-    $data['qp']
-      ->find(':root body')
-      ->append('<p>nobody implements action for this request:</p>')
-      ->append('<pre>' . print_r($data['req'], TRUE) . '</pre>');
   }
 }
