@@ -2,8 +2,12 @@
 /**
  * To show preformated value of $x
  */
-function pr($x) {
-  echo '<pre>' . print_r($x, TRUE) . '</pre>';
+function pr($x, $toreturn=FALSE) {
+  $result = '<pre>' . print_r($x, TRUE) . '</pre>';
+  if ($toreturn) {
+    return $result;
+  }
+  echo $result;
 }
 
 /**

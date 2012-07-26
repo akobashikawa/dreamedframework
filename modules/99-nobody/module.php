@@ -11,13 +11,20 @@ function nobody_root() {
 }
 
 function nobody_default(&$data) {
+
   if (is_array_empty($data['res'])) {
     $data['qp']
       ->find(':root title')
       ->html('Dreamed Framework');
     $data['qp']
       ->find(':root body')
-      ->append('<p>nobody implements action for this request:</p>')
+      ->append('<h1>Nobody</h1>')
+      ->append('<p>Nobody implements action for this request:</p>')
       ->append('<pre>' . print_r($data['req'], TRUE) . '</pre>');
   }
+
+  $data['qp']
+  ->find(':root body')
+  ->append(pr($data['log'], TRUE));
+
 }
