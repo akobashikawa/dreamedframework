@@ -14,6 +14,9 @@ function hello_root() {
  * Callback
  */
 function hello_helloworld(&$data) {
+  // template
+  $data['qp'] = getqp(base_dir() . '/index.html');
+
   $data['req']['hello'] = 'hello';
   $data['res']['hello']['greeting'] = 'Hello';
   $data['res']['hello']['to'] = 'World';

@@ -116,7 +116,7 @@ function hook($hook, &$data) {
  * Return querypath based on specified template if exists
  * else return querypath default template
  */
-function root_getqp($template) {
+function getqp($template) {
   if (!empty($template) && file_exists($template)) {
     $qp = htmlqp($template);
   } else {
@@ -143,9 +143,42 @@ function is_array_empty($x) {
   }
 }
 
+function main() {
+
+  // data
+  $data = array();
+  $parts = explode('?', $_SERVER['REQUEST_URI']);
+  $req = isset($parts[1])?$parts[1]:'';
+  $res = array();
+  $data['req']['root'] = $req;
+  $data['res']['root'] = $res;
+
+  // for debug
+  debug($data);
+
+  // someone?
+  hook('root', $data);
+
+  // render
+  if (isset($data['qp'])) {
+    $data['qp']->writeHTML();
+  }
+
+}//main
+
+/**
+ * To show debug info: $data['debug']
+ * To disable module: $data['debug']['off']['module'][$module] = 1
+ */
+function debug(&$data) {
+  $data['debug']['show'] = 1;
+  $data['debug']['off']['hook']['root'] = 0;
+  $data['debug']['off']['module']['hola'] = 0;
+}
+
 //////////
 // MAIN //
 //////////
 $modules = get_modules_list('modules');
 include_modules();
-root_main();
+main();
