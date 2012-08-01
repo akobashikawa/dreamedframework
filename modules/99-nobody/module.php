@@ -23,8 +23,10 @@ function nobody_default(&$data) {
       ->append('<pre>' . print_r($data['req'], TRUE) . '</pre>');
   }
 
-  $data['qp']
-  ->find(':root body')
-  ->append(pr($data['log'], TRUE));
+  if ($data['debug']['show'] == 1) {
+    $data['qp']
+    ->find(':root body')
+    ->append('<hr/>' . pr($data['log'], TRUE));
+  }
 
 }

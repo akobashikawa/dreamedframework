@@ -11,23 +11,35 @@ function root_hook($hook, &$data) {
 
   //$data['log']['hook'][$hook] = array();
   $data['log'][] = "hook: $hook";
-  foreach ($modules as $key => $module) {
-    $f = $module . '_' . $hook;
-    $result = array();
-    if ( function_exists($f) ) {
-      $items = $f();
-      foreach ($items as $pattern => $item) {
-        if (preg_match($pattern, $data['req'][$hook])) {
-          $action = $item['action'];
-          //$data['log']['hook'][$hook]['module'][$module]['pattern'][$pattern][] = $action;
-          $data['log'][] = "hook: $hook, module: $module, pattern: $pattern, action: $action";
-          $result = $action($data);
-        }//if
-      }//foreach
-    }//if
-    $data['res'][$hook][$module] = $result;
-  }//foreach
 
+  if (!isset($data['debug']['off']['hook'][$hook])
+      || $data['debug']['off']['hook'][$hook] == 0) {
+
+    foreach ($modules as $key => $module) {
+      if (!isset($data['debug']['off']['module'][$module])
+        || $data['debug']['off']['module'][$module] == 0) {
+
+        $f = $module . '_' . $hook;
+        $result = array();
+        if ( function_exists($f) ) {
+          $items = $f();
+          foreach ($items as $pattern => $item) {
+            if (preg_match($pattern, $data['req'][$hook])) {
+              $action = $item['action'];
+              //$data['log']['hook'][$hook]['module'][$module]['pattern'][$pattern][] = $action;
+              $data['log'][] = "hook: $hook, module: $module, pattern: $pattern, action: $action";
+              $result = $action($data);
+            }//if
+          }//foreach
+        }//if
+        $data['res'][$hook][$module] = $result;
+
+      }//if module
+    }//foreach
+
+
+  }//if hook
+  
 }
 
 /**
@@ -80,6 +92,9 @@ function root_main() {
   $data['res']['root'] = $res;
   $data['qp'] = $qp;
 
+  // for debug
+  root_debug($data);
+
   // someone?
   root_hook('root', $data);
 
@@ -110,4 +125,14 @@ function root_default(&$data) {
     ->find(':root body')
     ->append('<h1>Dreamed Framework</h1>');
   return TRUE;
+}
+
+/**
+ * To show debug info: $data['debug']
+ * To disable module: $data['debug']['off']['module'][$module] = 1
+ */
+function root_debug(&$data) {
+  $data['debug']['show'] = 1;
+  $data['debug']['off']['hook']['root'] = 0;
+  $data['debug']['off']['module']['hola'] = 0;
 }
