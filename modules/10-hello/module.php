@@ -17,7 +17,7 @@ function hello_helloworld(&$data) {
   $data['req']['hello'] = 'hello';
   $data['res']['hello']['greeting'] = 'Hello';
   $data['res']['hello']['to'] = 'World';
-  root_hook('hello', $data);
+  hook('hello', $data);
   $greeting = $data['res']['hello']['greeting'];
   $to = $data['res']['hello']['to'];
   $message =  "$greeting $to!";

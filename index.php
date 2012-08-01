@@ -1,4 +1,8 @@
 <?php
+/////////
+// LIB //
+/////////
+
 /**
  * To show preformated value of $x
  */
@@ -65,6 +69,78 @@ function base_path() {
  */
 function base_dir() {
   return dirname(__FILE__);
+}
+
+require_once 'lib/QueryPath/QueryPath.php';
+
+/**
+ * Allow all modules conventional participation
+ */
+function hook($hook, &$data) {
+  global $modules;
+
+  //$data['log']['hook'][$hook] = array();
+  $data['log'][] = "hook: $hook";
+
+  if (!isset($data['debug']['off']['hook'][$hook])
+      || $data['debug']['off']['hook'][$hook] == 0) {
+
+    foreach ($modules as $key => $module) {
+      if (!isset($data['debug']['off']['module'][$module])
+        || $data['debug']['off']['module'][$module] == 0) {
+
+        $f = $module . '_' . $hook;
+        $result = array();
+        if ( function_exists($f) ) {
+          $items = $f();
+          foreach ($items as $pattern => $item) {
+            if (preg_match($pattern, $data['req'][$hook])) {
+              $action = $item['action'];
+              //$data['log']['hook'][$hook]['module'][$module]['pattern'][$pattern][] = $action;
+              $data['log'][] = "hook: $hook, module: $module, pattern: $pattern, action: $action";
+              $result = $action($data);
+            }//if
+          }//foreach
+        }//if
+        $data['res'][$hook][$module] = $result;
+
+      }//if module
+    }//foreach
+
+
+  }//if hook
+  
+}
+
+/**
+ * Return querypath based on specified template if exists
+ * else return querypath default template
+ */
+function root_getqp($template) {
+  if (!empty($template) && file_exists($template)) {
+    $qp = htmlqp($template);
+  } else {
+    $template = '';
+    $qp = qp(QueryPath::HTML_STUB);
+  }
+  return $qp;
+}
+
+/**
+ * Return true if $x and descendants is empty
+ * else return FALSE
+ */
+function is_array_empty($x) {
+  if (is_array($x) && count($x)>0) {
+    foreach ($x as $item) {
+      if (!is_array_empty($item)) {
+        return FALSE;
+      }
+    }
+    return TRUE;
+  } else {
+    return empty($x);
+  }
 }
 
 //////////
