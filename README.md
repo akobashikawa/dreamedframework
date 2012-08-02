@@ -24,6 +24,6 @@ Ideas
   key sirve para seleccionar un action.
   action es un callback al que se le pasa $data.
 
-- $data['qp'] = getqp(base_dir() . '/index.html');
+- $data['qp'] = getqp('index.html');
   Permite establecer index.html como template.
   Cualquier módulo puede alterar esto.

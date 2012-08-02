@@ -15,7 +15,7 @@ function hello_root() {
  */
 function hello_helloworld(&$data) {
   // template
-  $data['qp'] = getqp(base_dir() . '/index.html');
+  $data['qp'] = getqp('helloworld.html');
 
   $data['req']['hello'] = 'hello';
   $data['res']['hello']['greeting'] = 'Hello';
@@ -26,5 +26,5 @@ function hello_helloworld(&$data) {
   $message =  "$greeting $to!";
   $data['qp']
     ->find(':root body')
-    ->append('<h1>' . $message . '</h1>');
+    ->before('<h1>' . $message . '</h1>');
 }

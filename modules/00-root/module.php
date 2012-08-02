@@ -15,13 +15,13 @@ function root_root() {
  */
 function root_default(&$data) {
   // template
-  $data['qp'] = getqp(base_dir() . '/index.html');
+  $data['qp'] = getqp('index.html');
 
   $data['qp']
     ->find(':root title')
     ->html('Dreamed Framework');
   $data['qp']
     ->find(':root body')
-    ->append('<h1>Dreamed Framework</h1>');
+    ->before('<h1>Dreamed Framework</h1>');
   return TRUE;
 }
