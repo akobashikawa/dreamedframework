@@ -17,9 +17,13 @@ Ideas
 
 - root es el módulo base.
 
-- root_hook('hookname', $data) permite que todos los módulos puedan modificar $data.
+- hook('hookname', $data) permite que todos los módulos puedan modificar $data.
   Los módulos son consultados en el orden alfabético de sus directorios (dd permite manipular el orden de los módulos).
 
 - Si un módulo mmm quiere participar del hookname, implementa mmm_hookname(), que devuelve un array de pares key => action.
   key sirve para seleccionar un action.
   action es un callback al que se le pasa $data.
+
+- $data['qp'] = getqp(base_dir() . '/index.html');
+  Permite establecer index.html como template.
+  Cualquier módulo puede alterar esto.

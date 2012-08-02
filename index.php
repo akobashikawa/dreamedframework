@@ -90,6 +90,7 @@ function hook($hook, &$data) {
         || $data['debug']['off']['module'][$module] == 0) {
 
         $f = $module . '_' . $hook;
+
         $result = array();
         if ( function_exists($f) ) {
           $items = $f();
